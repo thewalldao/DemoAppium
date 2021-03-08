@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
 
@@ -31,6 +32,7 @@ public class TestAppSauceLab {
     public AppiumDriver<MobileElement> getDriver() {
         return driver;
     }
+
 
     @Before
     public void setUp() throws MalformedURLException {
@@ -64,9 +66,8 @@ public class TestAppSauceLab {
 
     @Test
     public void shouldOpenApp() {
-        WebDriverWait wait = new WebDriverWait(driver, 120);
+        driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         getDriver().findElement(By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView)[1]")).click();
-        wait.until(ExpectedConditions.visibilityOf(driver.findElementByXPath("//android.view.View[@resource-id='root']//android.view.View//android.widget.EditText[1]")));
         getDriver().findElement(By.xpath("//android.view.View[@resource-id='root']//android.view.View//android.widget.EditText[1]")).sendKeys("regr_beneficiary");
         getDriver().findElement(By.xpath("//android.view.View[@resource-id='root']//android.view.View//android.widget.EditText[2]")).sendKeys("IMS@regr#test215");
         getDriver().findElement(By.xpath("//android.view.View[@resource-id='root']//android.view.View//android.widget.Button")).click();
