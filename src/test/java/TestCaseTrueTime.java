@@ -1,6 +1,9 @@
 import io.appium.java_client.*;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.touch.LongPressOptions;
+import io.appium.java_client.touch.TapOptions;
+import io.appium.java_client.touch.offset.ElementOption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.MutableCapabilities;
 
@@ -12,14 +15,40 @@ import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import static io.appium.java_client.touch.WaitOptions.waitOptions;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TestCaseTrueTime {
-    private AppiumDriver<MobileElement> driver;
+    private AndroidDriver<MobileElement> driver;
+
+    public void tabByElement(MobileElement element) {
+        new TouchAction(driver).tap(TapOptions.tapOptions().withElement(ElementOption.element(element))).perform();
+    }
+
+    public void pressByElementWithSecond(MobileElement element, long duration) {
+        new TouchAction(driver).longPress(LongPressOptions.longPressOptions()
+                .withElement(ElementOption.element(element))
+                .withDuration(Duration.ofSeconds(duration)))
+                .release()
+                .perform();
+    }
+
+    public void waitAndClickElementInsecond(MobileElement element, long timeOut){
+        StopWatch.startClock();
+        Long elapseTime = StopWatch.getElapsedTime();
+        boolean elementIsNotDisPlayed = true;
+        while (elementIsNotDisPlayed && ((StopWatch.getTimeLeftInSecond(timeOut)-elapseTime) > timeOut)){
+            if (element.isDisplayed()){
+                element.click();
+                elementIsNotDisPlayed =false;
+            }
+        }
+    }
 
     @BeforeTest
     public void setUp() throws MalformedURLException {
@@ -56,9 +85,8 @@ public class TestCaseTrueTime {
 
     @Test
     public void shouldOpenApp() {
-        TouchAction action = new TouchAction(driver);
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-
+        TouchAction action = new TouchAction(driver);
         MobileElement eleStart = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Get Started']"));
         eleStart.click();
         MobileElement eleAccept = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Accept']"));
@@ -67,19 +95,14 @@ public class TestCaseTrueTime {
         eleSkip.click();
 
         MobileElement iconHamburger = driver.findElement(By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@displayed='true'])[1]/.."));
-        iconHamburger.click();
-        iconHamburger.click();
-//        driver.findElement(By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView)[1]")).click();
-//        if (!hamburgerIcon.isDisplayed()){
-//            throw new Error("Hamburger icon is not displayed");
-//        }else{
-//            System.out.println("Hamburger");
-//        }
-//        hamburgerIcon.click();
+        boolean isKeyboardShown = driver.isKeyboardShown();
+        if (!isKeyboardShown) {
+            tabByElement(iconHamburger);
+        }
 
         MobileElement xButton = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='\uE14C']/.."));
         MobileElement home = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='HOME']/.."));
-        MobileElement whatBal = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[contains(@text, 'a BAL TrueTime?')]/.."));
+        MobileElement whatBal = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[contains(@text, 'a BAL TrueTime?')]"));
         MobileElement upgradeBal = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='UPGRADE TO BAL TrueTime']/.."));
         MobileElement immigrationNews = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Immigration News']/.."));
         MobileElement privatePolicy = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Privacy Policy']/.."));
@@ -88,7 +111,6 @@ public class TestCaseTrueTime {
 //        MobileElement upgradeBalLabel = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Benefits of upgrading to BAL TrueTime']"));
 //        MobileElement Url = driver.findElement(By.xpath("//android.widget.EditText[@resource-id='com.android.chrome:id/url_bar']"));
 //        MobileElement buttonOnce = driver.findElement(By.xpath("//android.widget.Button[@resource-id='android:id/button_once']"));
-
 
 
         ArrayList<String> error1 = new ArrayList<String>();
@@ -116,20 +138,38 @@ public class TestCaseTrueTime {
             error1.add("Terms & Conditions is not display");
         }
 
-        if (error1.size() > 0){
+        if (error1.size() > 0) {
             error1.forEach(System.out::println);
             throw new Error("Menu option displayed not correctly");
         }
 
         home.click();
-        if (!caseLabel.isDisplayed()){
+        if (!caseLabel.isDisplayed()) {
             error2.add("Case list page is not displayed");
         }
-        iconHamburger.click();
-        iconHamburger.click();
+//        iconHamburger.click();
+//        iconHamburger.click();
+        boolean iconHambergernotDisPlayed = true;
+        while (iconHambergernotDisPlayed){
+            if (iconHamburger.isDisplayed()){
+                iconHamburger.click();
+                iconHambergernotDisPlayed =false;
+            }
+        };
 
-        whatBal.click();
-        whatBal.click();
+        waitAndClickElementInsecond(iconHamburger,5);
+//        pressByElementWithSecond(iconHamburger,1);
+//        tabByElement(iconHamburger);
+
+//        pressByElementWithSecond(whatBal,1);
+        boolean whatbalnotDisPlayed = true;
+        while (whatbalnotDisPlayed){
+            if (whatBal.isDisplayed()){
+                tabByElement(whatBal);
+                whatbalnotDisPlayed =false;
+            }
+        };
+
         MobileElement whatBalLabel = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Why did BAL create Case TrueTime?']"));
         if (!whatBalLabel.isDisplayed()){
             error2.add("Information of WHAT'S a BAL TrueTime? is not displayed");
