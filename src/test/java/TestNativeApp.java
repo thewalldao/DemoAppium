@@ -37,7 +37,7 @@ public class TestNativeApp {
 //            capabilities.setCapability("app", "storage:filename=BALCobalt_v3.1.apk");
 
         driver = new AndroidDriver<MobileElement>(
-                new URL("http://192.168.171.130:4723/wd/hub"),
+                new URL("http://192.168.170.74:4723/wd/hub"),
                 capabilities);
     }
 

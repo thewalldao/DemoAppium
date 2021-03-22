@@ -39,13 +39,15 @@ public class TestCaseTrueTime {
     }
 
     public void waitAndClickElementInsecond(MobileElement element, long timeOut){
-        StopWatch.startClock();
-        Long elapseTime = StopWatch.getElapsedTime();
+        long startTime = System.currentTimeMillis() * 1000;
         boolean elementIsNotDisPlayed = true;
-        while (elementIsNotDisPlayed && ((StopWatch.getTimeLeftInSecond(timeOut)-elapseTime) > timeOut)){
+        while (elementIsNotDisPlayed && (((System.currentTimeMillis() * 1000 ) - startTime) > 0)){
             if (element.isDisplayed()){
                 element.click();
-                elementIsNotDisPlayed =false;
+                elementIsNotDisPlayed = false;
+            }
+            if (!element.isDisplayed()){
+                throw new Error("This Element not Display");
             }
         }
     }
@@ -88,7 +90,7 @@ public class TestCaseTrueTime {
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
         TouchAction action = new TouchAction(driver);
         MobileElement eleStart = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Get Started']"));
-        eleStart.click();
+        waitAndClickElementInsecond(eleStart,5);
         MobileElement eleAccept = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Accept']"));
         eleAccept.click();
         MobileElement eleSkip = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Skip This Step']"));
@@ -149,13 +151,13 @@ public class TestCaseTrueTime {
         }
 //        iconHamburger.click();
 //        iconHamburger.click();
-        boolean iconHambergernotDisPlayed = true;
-        while (iconHambergernotDisPlayed){
-            if (iconHamburger.isDisplayed()){
-                iconHamburger.click();
-                iconHambergernotDisPlayed =false;
-            }
-        };
+//        boolean iconHambergernotDisPlayed = true;
+//        while (iconHambergernotDisPlayed){
+//            if (iconHamburger.isDisplayed()){
+//                iconHamburger.click();
+//                iconHambergernotDisPlayed =false;
+//            }
+//        };
 
         waitAndClickElementInsecond(iconHamburger,5);
 //        pressByElementWithSecond(iconHamburger,1);

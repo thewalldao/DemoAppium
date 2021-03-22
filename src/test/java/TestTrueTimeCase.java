@@ -17,9 +17,9 @@ import static org.junit.Assert.assertTrue;
 public class TestTrueTimeCase {
     private AppiumDriver<MobileElement> driver;
 
-    public AppiumDriver<MobileElement> getDriver() {
-        return driver;
-    }
+//    public AppiumDriver<MobileElement> driver {
+//        return driver;
+//    }
 
     private String name;
 
@@ -32,7 +32,7 @@ public class TestTrueTimeCase {
 //        capabilities.setCapability("newCommandTimeout", "90");
 //        capabilities.setCapability("language", "en");
         capabilities.setCapability("platformName", "android");
-        capabilities.setCapability("platformVersion", "10");
+        capabilities.setCapability("platformVersion", "11");
         capabilities.setCapability("deviceName", "Nokia 5.1 Plus");
         capabilities.setCapability("name", "US6808 - Verify the Navigation of the matches the style guide - TestRail");
         capabilities.setCapability("appPackage", "com.bal.approvaltime");
@@ -44,29 +44,29 @@ public class TestTrueTimeCase {
 //            capabilities.setCapability("app", "storage:filename=BALCobalt_v3.1.apk");
 
         driver = new AndroidDriver<MobileElement>(
-                new URL("http://192.168.170.232:4723/wd/hub"),
+                new URL("http://192.168.170.205:4723/wd/hub"),
                 capabilities);
     }
 
     @AfterTest
     public void tearDown() {
-        if (getDriver() != null) {
-            getDriver().quit();
+        if (driver != null) {
+            driver.quit();
         }
     }
 
     @Test
     public void shouldOpenApp() {
-        getDriver().manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
-        getDriver().findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Skip This Step']")).click();
-        getDriver().findElement(By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView)[1]")).isDisplayed();
-        getDriver().findElement(By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView)[1]")).click();
+        driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+        driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Skip This Step']")).click();
+        driver.findElement(By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView)[1]")).isDisplayed();
+        driver.findElement(By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView)[1]")).click();
 
-        MobileElement xButton = getDriver().findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='\uE14C']"));
-        MobileElement Home = getDriver().findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Home']"));
-        MobileElement whatBal = getDriver().findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='what's BALestimate?']"));
-        MobileElement immigrationNews = getDriver().findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Immigration News']"));
-        MobileElement termAndConditions = getDriver().findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Terms & Conditions']"));
+        MobileElement xButton = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='\uE14C']"));
+        MobileElement Home = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Home']"));
+        MobileElement whatBal = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='what's BALestimate?']"));
+        MobileElement immigrationNews = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Immigration News']"));
+        MobileElement termAndConditions = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Terms & Conditions']"));
 
 
         ArrayList<String> error = new ArrayList<String>();
