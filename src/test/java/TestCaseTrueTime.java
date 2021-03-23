@@ -10,6 +10,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.MutableCapabilities;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -19,6 +21,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static io.appium.java_client.touch.WaitOptions.waitOptions;
@@ -26,12 +30,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TestCaseTrueTime {
-    private AndroidDriver<MobileElement> driver;
-    public boolean isMenuOpen = false;
+
+    private AppiumDriver<MobileElement> driver;
+    public AndroidDriver<MobileElement> Adriver;
+
 
     public void tabByElement(MobileElement element) {
         new TouchAction(driver).tap(TapOptions.tapOptions().withElement(ElementOption.element(element))).perform();
     }
+
+    public void waitforClickable(MobileElement element, int timeOut) {
+        WebDriverWait wait = new WebDriverWait(driver,timeOut);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
 
 //    public void waitAndTapEmlement(MobileElement element, long timetoWait){
 //        Stopwatch1 timer1 = new Stopwatch1();
@@ -44,11 +56,11 @@ public class TestCaseTrueTime {
 //        }
 //    }
 
-    public boolean isMenuOpen(){
+    public boolean isMenuOpen() {
         MobileElement menulabel = driver.findElement(By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@displayed='true'])[1]"));
-        if (menulabel.getText().equals('\uE14C')){
+        if (menulabel.getText().equals('\uE14C')) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -106,31 +118,44 @@ public class TestCaseTrueTime {
         driver = new AndroidDriver<MobileElement>(
                 new URL("http://192.168.170.205:4723/wd/hub"),
                 capabilities);
+        Adriver = ((AndroidDriver) driver);
+
     }
 
     @AfterTest
     public void tearDown() {
         if (driver != null) {
-            driver.closeApp();
+//        Adriver.pressKey(new KeyEvent(AndroidKey.APP_SWITCH));
+            driver.terminateApp("com.bal.approvaltime");
+            Adriver.terminateApp("com.bal.approvaltime");
+
+//            driver.closeApp();
             driver.quit();
         }
     }
 
     @Test
     public void shouldOpenApp() {
+
+
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
         MobileElement eleStart = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Get Started']"));
-        waitAndClickElementInsecond(eleStart, 1);
+        waitAndClickElementInsecond(eleStart,1);
+//        waitAndTapElementInsecond(eleStart.get(0),1);
+//        pressByElementWithSecond(eleStart.get(0),1);
+//        waitAndClickElementInsecond(eleStart, 1);
 
         MobileElement eleAccept = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Accept']"));
+//        pressByElementWithSecond(eleAccept, 1);
         waitAndClickElementInsecond(eleAccept,1);
 
+
         MobileElement eleSkip = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Skip This Step']"));
-        waitAndClickElementInsecond(eleSkip,1);
+        waitAndClickElementInsecond(eleSkip, 1);
 
         MobileElement buttonMenu = driver.findElement(By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@displayed='true'])[1]/.."));
-        boolean isKeyboardShown = driver.isKeyboardShown();
+        boolean isKeyboardShown = Adriver.isKeyboardShown();
         if (!isKeyboardShown) {
             buttonMenu.click();
         }
