@@ -119,15 +119,15 @@ public class TestCaseTrueTime {
     @Test
     public void shouldOpenApp() {
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-//        TouchAction action = new TouchAction(driver);
-        MobileElement eleStart = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Get Started']"));
-        eleStart.click();
 
-//        waitAndClickElementInsecond(eleStart, 5);
+        MobileElement eleStart = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Get Started']"));
+        waitAndClickElementInsecond(eleStart, 1);
+
         MobileElement eleAccept = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Accept']"));
-        eleAccept.click();
+        waitAndClickElementInsecond(eleAccept,1);
+
         MobileElement eleSkip = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Skip This Step']"));
-        eleSkip.click();
+        waitAndClickElementInsecond(eleSkip,1);
 
         MobileElement buttonMenu = driver.findElement(By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@displayed='true'])[1]/.."));
         boolean isKeyboardShown = driver.isKeyboardShown();
@@ -135,7 +135,6 @@ public class TestCaseTrueTime {
             buttonMenu.click();
         }
 
-//        MobileElement xButton = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='\uE14C']/.."));
         MobileElement buttonHome = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='HOME']/.."));
         MobileElement buttonWhatBal = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[contains(@text, 'a BAL TrueTime?')]"));
         MobileElement buttonUpgradeBal = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='UPGRADE TO BAL TrueTime']/.."));
@@ -143,8 +142,6 @@ public class TestCaseTrueTime {
         MobileElement linkPrivatePolicy = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Privacy Policy']/.."));
         MobileElement linkTermAndConditions = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Terms & Conditions']/.."));
         MobileElement labelCase = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='CASES']"));
-//        MobileElement Url = driver.findElement(By.xpath("//android.widget.EditText[@resource-id='com.android.chrome:id/url_bar']"));
-//        MobileElement buttonOnce = driver.findElement(By.xpath("//android.widget.Button[@resource-id='android:id/button_once']"));
 
 
         ArrayList<String> inAppErrors = new ArrayList<String>();
@@ -177,11 +174,11 @@ public class TestCaseTrueTime {
             throw new Error("Menu option displayed not correctly");
         }
 
+
         waitAndClickElementInsecond(buttonHome, 1);
         if (!labelCase.isDisplayed()) {
             inWebviewErrors.add("Case list page is not displayed");
         }
-
         pressByElementWithSecond(buttonMenu, 1);
         tabByElement(buttonMenu);
 
@@ -192,20 +189,17 @@ public class TestCaseTrueTime {
             inWebviewErrors.add("Information of WHAT'S a BAL TrueTime? is not displayed");
         }
         waitAndClickElementInsecond(buttonMenu, 1);
-//        buttonMenu.click();
 
 
-//        buttonUpgradeBal.click();
         waitAndClickElementInsecond(buttonUpgradeBal, 1);
         MobileElement buttonUpgradeBalLabel = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Benefits of upgrading to BAL TrueTime']"));
         if (!buttonUpgradeBalLabel.isDisplayed()) {
             inWebviewErrors.add("UPGRADE TO BAL TrueTime is not displayed");
         }
         driver.navigate().back();
-//        buttonMenu.click();
         waitAndClickElementInsecond(buttonMenu, 1);
 
-//        linkImmigrationNews.click();
+
         waitAndClickElementInsecond(linkImmigrationNews, 1);
         MobileElement Url = driver.findElement(By.xpath("//android.widget.EditText[@resource-id='com.android.chrome:id/url_bar']"));
         if (!Url.getText().equals("balglobal.com/news-US/")) {
@@ -213,12 +207,12 @@ public class TestCaseTrueTime {
         }
         driver.navigate().back();
 
+
         linkPrivatePolicy.click();
         MobileElement linkPrivatePolicyUrl = driver.findElement(By.xpath("//android.widget.EditText[@resource-id='com.android.chrome:id/url_bar']"));
         if (!linkPrivatePolicyUrl.getText().equals("balglobal.com/terms-of-use-and-privacy-policy/")) {
             inWebviewErrors.add("Url of Private Policy is not matched");
         }
-
         driver.navigate().back();
 
 
@@ -229,11 +223,12 @@ public class TestCaseTrueTime {
         }
         driver.navigate().back();
 
-//        buttonMenu.click();
+
         waitAndClickElementInsecond(buttonMenu, 1);
         if (isMenuOpen()) {
             inWebviewErrors.add("Menu is not closed successfully");
         }
+
 
         if (inWebviewErrors.size() > 0) {
             inWebviewErrors.forEach(System.out::println);
