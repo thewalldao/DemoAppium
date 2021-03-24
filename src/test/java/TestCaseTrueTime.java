@@ -151,6 +151,8 @@ public class TestCaseTrueTime {
 
 //        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
+        long timeWaitForElement = 10;
+
         By eleStart = By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Get Started']");
         waitAndClickforClickable(eleStart, 15);
 //        waitAndClickElementInsecond(eleStart,1);
@@ -159,18 +161,18 @@ public class TestCaseTrueTime {
 //        waitAndClickElementInsecond(eleStart, 1);
 
         By eleAccept = By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Accept']");
-        waitAndClickforClickable(eleAccept, 5);
+        waitAndClickforClickable(eleAccept, timeWaitForElement);
 //        pressByElementWithSecond(eleAccept, 1);
 //        waitAndClickElementInsecond(eleAccept,1);
 
 
         By eleSkip = By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Skip This Step']");
-        waitAndClickforClickable(eleSkip, 5);
+        waitAndClickforClickable(eleSkip, timeWaitForElement);
 
         By buttonMenu = By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@displayed='true'])[1]/..");
         boolean isKeyboardShown = Adriver.isKeyboardShown();
         if (!isKeyboardShown) {
-            waitAndClickforClickable(buttonMenu, 5);
+            waitAndClickforClickable(buttonMenu, timeWaitForElement);
         }
 
         By buttonHome = By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='HOME']/..");
@@ -188,25 +190,25 @@ public class TestCaseTrueTime {
         ArrayList<String> inAppErrors = new ArrayList<String>();
         ArrayList<String> inWebviewErrors = new ArrayList<String>();
 
-        if (isMenuOpen() && !waitforDisplayed(buttonMenu,5)) {
+        if (isMenuOpen() && !waitforDisplayed(buttonMenu,timeWaitForElement)) {
             inAppErrors.add("X button not displayed");
         }
-        if (!waitforDisplayed(buttonHome,5)) {
+        if (!waitforDisplayed(buttonHome,timeWaitForElement)) {
             inAppErrors.add("Home option is not display");
         }
-        if (!waitforDisplayed(buttonWhatBal,5)) {
+        if (!waitforDisplayed(buttonWhatBal,timeWaitForElement)) {
             inAppErrors.add("WHAT'S a BAL TrueTime? is not display");
         }
-        if (!waitforDisplayed(buttonUpgradeBal,5)) {
+        if (!waitforDisplayed(buttonUpgradeBal,timeWaitForElement)) {
             inAppErrors.add("UPGRADE TO BAL TrueTime is not display");
         }
-        if (!waitforDisplayed(linkImmigrationNews,5)) {
+        if (!waitforDisplayed(linkImmigrationNews,timeWaitForElement)) {
             inAppErrors.add("Immigration News is not display");
         }
-        if (!waitforDisplayed(linkPrivatePolicy,5)) {
+        if (!waitforDisplayed(linkPrivatePolicy,timeWaitForElement)) {
             inAppErrors.add("Privacy Policy is not display");
         }
-        if (!waitforDisplayed(linkTermAndConditions,5)) {
+        if (!waitforDisplayed(linkTermAndConditions,timeWaitForElement)) {
             inAppErrors.add("Terms & Conditions is not display");
         }
 
@@ -216,53 +218,53 @@ public class TestCaseTrueTime {
         }
 
 
-        waitAndClickforClickable(buttonHome, 5);
-        if (!waitforDisplayed(labelCase, 5)) {
+        waitAndClickforClickable(buttonHome, timeWaitForElement);
+        if (!waitforDisplayed(labelCase, timeWaitForElement)) {
             inWebviewErrors.add("Case list page is not displayed");
         }
 //        pressByElementWithSecond(buttonMenu, 1);
 //        tabByElement(buttonMenu);
-        waitAndClickforClickable(buttonMenu, 5);
+        waitAndClickforClickable(buttonMenu, timeWaitForElement);
 
 
-        waitAndClickforClickable(buttonWhatBal, 5);
-        if (!waitforDisplayed(buttonWhatBalLabel, 5)) {
+        waitAndClickforClickable(buttonWhatBal, timeWaitForElement);
+        if (!waitforDisplayed(buttonWhatBalLabel, timeWaitForElement)) {
             inWebviewErrors.add("Information of WHAT'S a BAL TrueTime? is not displayed");
         }
-        waitAndClickforClickable(buttonMenu, 5);
+        waitAndClickforClickable(buttonMenu, timeWaitForElement);
 
 
-        waitAndClickforClickable(buttonUpgradeBal, 5);
-        if (!waitforDisplayed(buttonUpgradeBalLabel, 5)) {
+        waitAndClickforClickable(buttonUpgradeBal, timeWaitForElement);
+        if (!waitforDisplayed(buttonUpgradeBalLabel, timeWaitForElement)) {
             inWebviewErrors.add("UPGRADE TO BAL TrueTime is not displayed");
         }
         driver.navigate().back();
-        waitAndClickforClickable(buttonMenu, 5);
+        waitAndClickforClickable(buttonMenu, timeWaitForElement);
 
 
-        waitAndClickforClickable(linkImmigrationNews, 5);
-        System.out.println(waitforDisplayed(Url,1));
+        waitAndClickforClickable(linkImmigrationNews, timeWaitForElement);
+        System.out.println(waitforDisplayed(Url,timeWaitForElement));
         if (!driver.findElement(Url).getText().equals("balglobal.com/news-US/")) {
             inWebviewErrors.add("Url of Immigration News is not matched");
         }
         driver.navigate().back();
 
-        waitAndClickforClickable(linkPrivatePolicy, 5);
-        waitforDisplayed(Url,5);
+        waitAndClickforClickable(linkPrivatePolicy, timeWaitForElement);
+        waitforDisplayed(Url,timeWaitForElement);
         if (!driver.findElement(Url).getText().equals("balglobal.com/terms-of-use-and-privacy-policy/")) {
             inWebviewErrors.add("Url of Private Policy is not matched");
         }
         driver.navigate().back();
 
-        waitAndClickforClickable(linkTermAndConditions, 5);
-        waitforDisplayed(Url,5);
+        waitAndClickforClickable(linkTermAndConditions, timeWaitForElement);
+        waitforDisplayed(Url,timeWaitForElement);
         if (!driver.findElement(Url).getText().equals("balglobal.com/digitalterms/")) {
             inWebviewErrors.add("Url of Term and Conditions is not matched");
         }
         driver.navigate().back();
 
 
-        waitAndClickforClickable(buttonMenu, 5);
+        waitAndClickforClickable(buttonMenu, timeWaitForElement);
         if (isMenuOpen()) {
             inWebviewErrors.add("Menu is not closed successfully");
         }
