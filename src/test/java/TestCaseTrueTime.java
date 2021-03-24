@@ -39,9 +39,20 @@ public class TestCaseTrueTime {
         new TouchAction(driver).tap(TapOptions.tapOptions().withElement(ElementOption.element(element))).perform();
     }
 
-    public void waitforClickable(MobileElement element, int timeOut) {
-        WebDriverWait wait = new WebDriverWait(driver,timeOut);
-        wait.until(ExpectedConditions.elementToBeClickable(element));
+    public void waitAndClickforClickable(By by, long timeOut) {
+        WebElement wait = new WebDriverWait(driver, timeOut)
+                .until(ExpectedConditions.elementToBeClickable(by));
+        driver.findElement(by).click();
+    }
+
+    public boolean waitforDisplayed(By by, long timeOut) {
+        try {
+            WebElement wait = new WebDriverWait(driver, timeOut)
+                    .until(ExpectedConditions.visibilityOfElementLocated(by));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 
@@ -138,59 +149,64 @@ public class TestCaseTrueTime {
     public void shouldOpenApp() {
 
 
-        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+//        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
-        MobileElement eleStart = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Get Started']"));
-        waitAndClickElementInsecond(eleStart,1);
+        By eleStart = By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Get Started']");
+        waitAndClickforClickable(eleStart, 15);
+//        waitAndClickElementInsecond(eleStart,1);
 //        waitAndTapElementInsecond(eleStart.get(0),1);
 //        pressByElementWithSecond(eleStart.get(0),1);
 //        waitAndClickElementInsecond(eleStart, 1);
 
-        MobileElement eleAccept = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Accept']"));
+        By eleAccept = By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Accept']");
+        waitAndClickforClickable(eleAccept, 5);
 //        pressByElementWithSecond(eleAccept, 1);
-        waitAndClickElementInsecond(eleAccept,1);
+//        waitAndClickElementInsecond(eleAccept,1);
 
 
-        MobileElement eleSkip = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Skip This Step']"));
-        waitAndClickElementInsecond(eleSkip, 1);
+        By eleSkip = By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Skip This Step']");
+        waitAndClickforClickable(eleSkip, 5);
 
-        MobileElement buttonMenu = driver.findElement(By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@displayed='true'])[1]/.."));
+        By buttonMenu = By.xpath("(//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@displayed='true'])[1]/..");
         boolean isKeyboardShown = Adriver.isKeyboardShown();
         if (!isKeyboardShown) {
-            buttonMenu.click();
+            waitAndClickforClickable(buttonMenu, 5);
         }
 
-        MobileElement buttonHome = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='HOME']/.."));
-        MobileElement buttonWhatBal = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[contains(@text, 'a BAL TrueTime?')]"));
-        MobileElement buttonUpgradeBal = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='UPGRADE TO BAL TrueTime']/.."));
-        MobileElement linkImmigrationNews = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Immigration News']/.."));
-        MobileElement linkPrivatePolicy = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Privacy Policy']/.."));
-        MobileElement linkTermAndConditions = driver.findElement(By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Terms & Conditions']/.."));
-        MobileElement labelCase = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='CASES']"));
+        By buttonHome = By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='HOME']/..");
+        By buttonWhatBal = By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[contains(@text, 'a BAL TrueTime?')]");
+        By buttonUpgradeBal = By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='UPGRADE TO BAL TrueTime']/..");
+        By linkImmigrationNews = By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Immigration News']/..");
+        By linkPrivatePolicy = By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Privacy Policy']/..");
+        By linkTermAndConditions = By.xpath("(//android.widget.LinearLayout[@resource-id='com.bal.approvaltime:id/action_bar_root']//android.widget.ScrollView)[1]//android.widget.TextView[@text='Terms & Conditions']/..");
+        By labelCase = By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='CASES']");
+        By Url = By.xpath("//android.widget.EditText[@resource-id='com.android.chrome:id/url_bar']");
+        By buttonUpgradeBalLabel = By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Benefits of upgrading to BAL TrueTime']");
+        By buttonWhatBalLabel = By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Why did BAL create Case TrueTime?']");
 
 
         ArrayList<String> inAppErrors = new ArrayList<String>();
         ArrayList<String> inWebviewErrors = new ArrayList<String>();
 
-        if (isMenuOpen() && !buttonMenu.isDisplayed()) {
+        if (isMenuOpen() && !waitforDisplayed(buttonMenu,5)) {
             inAppErrors.add("X button not displayed");
         }
-        if (!buttonHome.isDisplayed()) {
+        if (!waitforDisplayed(buttonHome,5)) {
             inAppErrors.add("Home option is not display");
         }
-        if (!buttonWhatBal.isDisplayed()) {
+        if (!waitforDisplayed(buttonWhatBal,5)) {
             inAppErrors.add("WHAT'S a BAL TrueTime? is not display");
         }
-        if (!buttonUpgradeBal.isDisplayed()) {
+        if (!waitforDisplayed(buttonUpgradeBal,5)) {
             inAppErrors.add("UPGRADE TO BAL TrueTime is not display");
         }
-        if (!linkImmigrationNews.isDisplayed()) {
+        if (!waitforDisplayed(linkImmigrationNews,5)) {
             inAppErrors.add("Immigration News is not display");
         }
-        if (!linkPrivatePolicy.isDisplayed()) {
+        if (!waitforDisplayed(linkPrivatePolicy,5)) {
             inAppErrors.add("Privacy Policy is not display");
         }
-        if (!linkTermAndConditions.isDisplayed()) {
+        if (!waitforDisplayed(linkTermAndConditions,5)) {
             inAppErrors.add("Terms & Conditions is not display");
         }
 
@@ -200,56 +216,53 @@ public class TestCaseTrueTime {
         }
 
 
-        waitAndClickElementInsecond(buttonHome, 1);
-        if (!labelCase.isDisplayed()) {
+        waitAndClickforClickable(buttonHome, 5);
+        if (!waitforDisplayed(labelCase, 5)) {
             inWebviewErrors.add("Case list page is not displayed");
         }
-        pressByElementWithSecond(buttonMenu, 1);
-        tabByElement(buttonMenu);
+//        pressByElementWithSecond(buttonMenu, 1);
+//        tabByElement(buttonMenu);
+        waitAndClickforClickable(buttonMenu, 5);
 
 
-        waitAndClickElementInsecond(buttonWhatBal, 1);
-        MobileElement buttonWhatBalLabel = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Why did BAL create Case TrueTime?']"));
-        if (!buttonWhatBalLabel.isDisplayed()) {
+        waitAndClickforClickable(buttonWhatBal, 5);
+        if (!waitforDisplayed(buttonWhatBalLabel, 5)) {
             inWebviewErrors.add("Information of WHAT'S a BAL TrueTime? is not displayed");
         }
-        waitAndClickElementInsecond(buttonMenu, 1);
+        waitAndClickforClickable(buttonMenu, 5);
 
 
-        waitAndClickElementInsecond(buttonUpgradeBal, 1);
-        MobileElement buttonUpgradeBalLabel = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='android:id/content']//android.widget.TextView[@text='Benefits of upgrading to BAL TrueTime']"));
-        if (!buttonUpgradeBalLabel.isDisplayed()) {
+        waitAndClickforClickable(buttonUpgradeBal, 5);
+        if (!waitforDisplayed(buttonUpgradeBalLabel, 5)) {
             inWebviewErrors.add("UPGRADE TO BAL TrueTime is not displayed");
         }
         driver.navigate().back();
-        waitAndClickElementInsecond(buttonMenu, 1);
+        waitAndClickforClickable(buttonMenu, 5);
 
 
-        waitAndClickElementInsecond(linkImmigrationNews, 1);
-        MobileElement Url = driver.findElement(By.xpath("//android.widget.EditText[@resource-id='com.android.chrome:id/url_bar']"));
-        if (!Url.getText().equals("balglobal.com/news-US/")) {
+        waitAndClickforClickable(linkImmigrationNews, 5);
+        System.out.println(waitforDisplayed(Url,1));
+        if (!driver.findElement(Url).getText().equals("balglobal.com/news-US/")) {
             inWebviewErrors.add("Url of Immigration News is not matched");
         }
         driver.navigate().back();
 
-
-        linkPrivatePolicy.click();
-        MobileElement linkPrivatePolicyUrl = driver.findElement(By.xpath("//android.widget.EditText[@resource-id='com.android.chrome:id/url_bar']"));
-        if (!linkPrivatePolicyUrl.getText().equals("balglobal.com/terms-of-use-and-privacy-policy/")) {
+        waitAndClickforClickable(linkPrivatePolicy, 5);
+        waitforDisplayed(Url,5);
+        if (!driver.findElement(Url).getText().equals("balglobal.com/terms-of-use-and-privacy-policy/")) {
             inWebviewErrors.add("Url of Private Policy is not matched");
         }
         driver.navigate().back();
 
-
-        linkTermAndConditions.click();
-        MobileElement linkTermAndConditionsUrl = driver.findElement(By.xpath("//android.widget.EditText[@resource-id='com.android.chrome:id/url_bar']"));
-        if (!linkTermAndConditionsUrl.getText().equals("balglobal.com/digitalterms/")) {
+        waitAndClickforClickable(linkTermAndConditions, 5);
+        waitforDisplayed(Url,5);
+        if (!driver.findElement(Url).getText().equals("balglobal.com/digitalterms/")) {
             inWebviewErrors.add("Url of Term and Conditions is not matched");
         }
         driver.navigate().back();
 
 
-        waitAndClickElementInsecond(buttonMenu, 1);
+        waitAndClickforClickable(buttonMenu, 5);
         if (isMenuOpen()) {
             inWebviewErrors.add("Menu is not closed successfully");
         }
