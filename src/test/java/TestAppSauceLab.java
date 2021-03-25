@@ -51,7 +51,7 @@ public class TestAppSauceLab {
         capabilities.setCapability("platformVersion", "8");
         capabilities.setCapability("deviceName", "Android Emulator");
         capabilities.setCapability("name", "Verify that Bal login successfully");
-        capabilities.setCapability("appPackage", "com.bal.cobalt");
+        capabilities.setCapability("appPackage", "c");
         capabilities.setCapability("automationName", "UiAutomator2");
         //You need to upload your own Native Mobile App to Sauce Storage!
         //https://wiki.saucelabs.com/display/DOCS/Uploading+your+Application+to+Sauce+Storage
